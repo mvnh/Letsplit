@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -60,13 +59,12 @@ fun MainScreen() {
                 )
             }
         },
-        contentWindowInsets = WindowInsets(top = 0.dp)
+        contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(innerPadding)
-                .safeDrawingPadding()
+                .fillMaxSize()
         ) {
             LetsplitNavHost(
                 modifier = Modifier
