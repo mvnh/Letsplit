@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Scaffold
@@ -37,7 +38,7 @@ fun MainScreen() {
             route = Screen.EventInvitations.route,
             labelRes = R.string.event_invitations,
             selectedIcon = Icons.Filled.AddCircle,
-            unselectedIcon = Icons.Outlined.AddCircle
+            unselectedIcon = Icons.Outlined.Add
         ),
         BottomNavItem(
             route = Screen.Profile.route,

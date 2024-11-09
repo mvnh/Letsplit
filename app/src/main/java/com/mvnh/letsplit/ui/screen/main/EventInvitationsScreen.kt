@@ -1,4 +1,4 @@
-package com.mvnh.letsplit.ui.screen
+package com.mvnh.letsplit.ui.screen.main
 
 import androidx.compose.runtime.Composable
 
