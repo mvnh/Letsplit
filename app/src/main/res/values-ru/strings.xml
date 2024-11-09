@@ -3,4 +3,14 @@
     <string name="events">События</string>
     <string name="event_invitations">Приглашения</string>
     <string name="profile">Профиль</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="hide_password">Скрыть пароль</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="phone_number">Phone number</string>
 </resources>
