@@ -22,11 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.mvnh.letsplit.R
+import com.mvnh.letsplit.ui.navigation.Screen
+import com.mvnh.letsplit.ui.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WelcomeScreen(navController: NavController) {
+fun WelcomeScreen(
+    navController: NavController,
+    viewModel: AuthViewModel = koinViewModel()
+) {
     val coroutineScope = rememberCoroutineScope()
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(R.string.sign_in, R.string.sign_up)
@@ -34,6 +40,12 @@ fun WelcomeScreen(navController: NavController) {
 
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
+    }
+
+    if (viewModel.getUserId() != null) {
+        navController.navigate(Screen.Events.route) {
+            popUpTo(Screen.Welcome.route) { inclusive = true }
+        }
     }
 
     Scaffold(
