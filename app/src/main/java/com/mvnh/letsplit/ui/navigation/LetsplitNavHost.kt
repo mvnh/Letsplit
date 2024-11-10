@@ -12,6 +12,7 @@ import com.mvnh.letsplit.ui.screen.main.EventsScreen
 import com.mvnh.letsplit.ui.screen.main.ProfileScreen
 import com.mvnh.letsplit.ui.screen.auth.WelcomeScreen
 import com.mvnh.letsplit.ui.screen.main.CreateEventScreen
+import com.mvnh.letsplit.ui.screen.main.EventsDetailsScreen
 
 @Composable
 fun LetsplitNavHost(
@@ -29,7 +30,7 @@ fun LetsplitNavHost(
             WelcomeScreen(navController)
         }
         composable(Screen.Events.route) {
-            EventsScreen()
+            EventsScreen(navController)
         }
         composable(Screen.EventInvitations.route) {
             EventInvitationsScreen()
@@ -42,6 +43,10 @@ fun LetsplitNavHost(
 //        }
         composable(Screen.CreateEvent.route) {
             CreateEventScreen()
+        }
+
+        composable(Screen.Details.route) {
+            EventsDetailsScreen()
         }
     }
 }

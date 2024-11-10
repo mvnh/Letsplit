@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -31,17 +32,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import com.mvnh.letsplit.R
 import com.mvnh.letsplit.domain.model.InvitationDetails
 
@@ -86,21 +81,30 @@ fun EventInvitationsScreen() {
             )
         }
     ) { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            items(invitations) { invitation ->
-                InvitationItem(
-                    invitation.imageUrl,
-                    invitation.creatorName,
-                    invitation.eventName,
-                    invitation.until,
-                    invitation.status
-                )
-            }
+            Text("Заявок нет")
         }
+//        LazyColumn(
+//            modifier = Modifier
+//                .padding(innerPadding)
+//                .fillMaxSize()
+//        ) {
+//            items(invitations) { invitation ->
+//                InvitationItem(
+//                    invitation.imageUrl,
+//                    invitation.creatorName,
+//                    invitation.eventName,
+//                    invitation.until,
+//                    invitation.status
+//                )
+//            }
+//        }
     }
 }
 
