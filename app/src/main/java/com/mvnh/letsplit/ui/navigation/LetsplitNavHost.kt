@@ -19,7 +19,7 @@ fun LetsplitNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Events.route,
+        startDestination = Screen.Welcome.route,
         modifier = modifier,
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() }
