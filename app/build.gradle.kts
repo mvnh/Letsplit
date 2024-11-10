@@ -67,5 +67,4 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
-    implementation(libs.coil.gif)
 }
