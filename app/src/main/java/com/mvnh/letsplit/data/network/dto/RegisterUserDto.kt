@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RegisterUserDto(
     @SerialName("full_name") val fullName: String,
-    @SerialName("phone_number") val phoneNumber: String,
+    @SerialName("phone") val phoneNumber: String,
     val password: String
 )

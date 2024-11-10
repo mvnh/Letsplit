@@ -1,31 +1,36 @@
 package com.mvnh.letsplit.ui.screen.main
 
-import androidx.compose.foundation.Image
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mvnh.letsplit.R
-
-data class EventInfo(
-    val title: String,
-    val date: String,
-    val amount: String,
-    val balanceStatus: String,
-    val balanceAmount: String
-)
+import com.mvnh.letsplit.domain.model.EventDetails
+import com.mvnh.letsplit.ui.viewmodel.state.BalanceStatus
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,71 +39,108 @@ fun EventsScreen() {
         topBar = {
             TopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = null,
-                            modifier = Modifier.size(40.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "Letsplit",
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                },
-                actions = {
-                    Icon(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(100.dp))
-                            .size(40.dp),
-                        painter = painterResource(R.drawable.ic_launcher_background),
-                        contentDescription = null
+                    Text(
+                        text = "Letsplit",
+                        fontWeight = FontWeight.SemiBold
                     )
-                    Spacer(modifier = Modifier.width(10.dp))
                 }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp),
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
+        LazyColumn(
+            modifier = Modifier.padding(innerPadding)
         ) {
-            BalanceSection()
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = "All events",
-                style = MaterialTheme.typography.titleMedium,
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            val events = listOf(
-                EventInfo("Birthday House", "Mar 24, 2023", "$4508.32", "You are owed: ", "$3005.54"),
-                EventInfo("Shopping", "Mar 24, 2023", "$505.00", "You owe: ", "$89.00"),
-                EventInfo("Grocery Shopping", "Mar 20, 2023", "$200.00", "You are owed: ", "$50.00"),
-                EventInfo("Concert", "Mar 18, 2023", "$150.00", "You owe: ", "$30.00")
-            )
-
-            events.forEach { event ->
-                BillItem(
-                    title = event.title,
-                    date = event.date,
-                    amount = event.amount,
-                    balanceStatus = {
-                        Text(text = event.balanceStatus, style = MaterialTheme.typography.bodySmall)
-                    },
-                    balanceAmount = {
-                        Text(text = event.balanceAmount, style = MaterialTheme.typography.bodyLarge)
-                    },
-                    balanceColor = if (event.balanceStatus == "You owe: ") Color(0xFF08FF44).copy(alpha = 0.3f) else Color(0xFFFF0000).copy(alpha = 0.3f)
+            item {
+                BalanceCardsSection(
+                    titleRes = R.string.balance,
+                    content = {
+                        BalanceCard(
+                            amount = 1000,
+                            type = BalanceStatus.Negative,
+                            label = {
+                                Text(
+                                    text = stringResource(R.string.you_owe),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                            }
+                        )
+                        BalanceCard(
+                            amount = 1000,
+                            type = BalanceStatus.Positive,
+                            label = {
+                                Text(
+                                    text = stringResource(R.string.you_are_owed),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                            }
+                        )
+                    }
                 )
             }
+            item {
+                EventCardsSection(titleRes = R.string.events) {
+                    EventCard(
+                        eventDetails = EventDetails(
+                            title = "Event 1",
+                            deadline = LocalDate.now().plusDays(1),
+                            targetAmount = 1000,
+                            collectedAmount = 523,
+                            balanceStatus = BalanceStatus.Positive
+                        )
+                    )
+                    EventCard(
+                        eventDetails = EventDetails(
+                            title = "Event 2",
+                            deadline = LocalDate.now().plusDays(2),
+                            targetAmount = 1000,
+                            collectedAmount = -523,
+                            balanceStatus = BalanceStatus.Negative
+                        )
+                    )
+                    EventCard(
+                        eventDetails = EventDetails(
+                            title = "Event 4",
+                            deadline = LocalDate.now().plusDays(4),
+                            targetAmount = 1000,
+                            collectedAmount = 1000,
+                            balanceStatus = BalanceStatus.Positive
+                        )
+                    )
+                    EventCard(
+                        eventDetails = EventDetails(
+                            title = "Event 5",
+                            deadline = LocalDate.now().plusDays(5),
+                            targetAmount = 1000,
+                            collectedAmount = -1000,
+                            balanceStatus = BalanceStatus.Negative
+                        )
+                    )
+                }
+            }
         }
+    }
+}
+
+@Composable
+fun BalanceCardsSection(
+    @StringRes titleRes: Int,
+    content: @Composable () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = stringResource(id = titleRes),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier
+                .paddingFromBaseline(bottom = 8.dp)
+                .padding(horizontal = 8.dp)
+        )
+        content()
     }
 }
 

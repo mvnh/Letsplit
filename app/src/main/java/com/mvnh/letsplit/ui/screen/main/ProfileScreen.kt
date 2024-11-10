@@ -107,16 +107,16 @@ fun ProfileScreen() {
                     .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                BalanceCard(
-                    amount = { Text(text = "$567.58", style = MaterialTheme.typography.titleLarge) },
-                    label = { Text(text = "You Owe", style = MaterialTheme.typography.bodySmall) },
-                    Color(0xFFFF0000).copy(alpha = 0.3f)
-                )
-                BalanceCard(
-                    amount = { Text(text = "$826.43", style = MaterialTheme.typography.titleLarge) },
-                    label = { Text(text = "Owes You", style = MaterialTheme.typography.bodySmall) },
-                    Color(0xFF08FF44).copy(alpha = 0.3f)
-                )
+//                BalanceCard(
+//                    amount = { Text(text = "$567.58", style = MaterialTheme.typography.titleLarge) },
+//                    label = { Text(text = "You Owe", style = MaterialTheme.typography.bodySmall) },
+//                    Color(0xFFFF0000).copy(alpha = 0.3f)
+//                )
+//                BalanceCard(
+//                    amount = { Text(text = "$826.43", style = MaterialTheme.typography.titleLarge) },
+//                    label = { Text(text = "Owes You", style = MaterialTheme.typography.bodySmall) },
+//                    Color(0xFF08FF44).copy(alpha = 0.3f)
+//                )
             }
 
             HorizontalDivider(

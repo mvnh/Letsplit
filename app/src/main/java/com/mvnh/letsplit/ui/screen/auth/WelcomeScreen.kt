@@ -20,12 +20,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.mvnh.letsplit.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(R.string.sign_in, R.string.sign_up)
@@ -68,8 +69,8 @@ fun WelcomeScreen() {
                     .weight(1f)
             ) { page ->
                 when (page) {
-                    0 -> SignInScreen()
-                    1 -> SignUpScreen()
+                    0 -> SignInScreen(navController)
+                    1 -> SignUpScreen(navController)
                 }
             }
         }
