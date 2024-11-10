@@ -20,4 +20,8 @@
     <string name="balance">Balance</string>
     <string name="notifications">Notifications</string>
     <string name="phone">Phone</string>
+    <string name="back">Back</string>
+    <string name="transfer_money">Transfer money</string>
+    <string name="create_event">Create event</string>
+    <string name="expenses">Expenses</string>
 </resources>

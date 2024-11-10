@@ -13,10 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,15 +32,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.mvnh.letsplit.R
 import com.mvnh.letsplit.domain.model.EventDetails
+import com.mvnh.letsplit.ui.navigation.Screen
+import com.mvnh.letsplit.ui.viewmodel.EventsViewModel
 import com.mvnh.letsplit.ui.viewmodel.state.BalanceStatus
-import java.time.LocalDate
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventsScreen(navController: NavHostController) {
+fun EventsScreen(
+    navController: NavController,
+    viewModel: EventsViewModel = koinViewModel()
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -47,6 +56,16 @@ fun EventsScreen(navController: NavHostController) {
                     )
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate(Screen.CreateEvent.route) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.create_event)
+                )
+            }
         },
         contentWindowInsets = WindowInsets(0.dp),
     ) { innerPadding ->
@@ -82,54 +101,9 @@ fun EventsScreen(navController: NavHostController) {
             }
             item {
                 EventCardsSection(titleRes = R.string.events) {
-                    EventCard(
-                        eventDetails = EventDetails(
-                            title = "Event 1",
-                            deadline = LocalDate.now().plusDays(1),
-                            targetAmount = 1000,
-                            collectedAmount = 523,
-                            balanceStatus = BalanceStatus.Positive,
-                        ),
-                        onClick = {
-                            navController.navigate("")
-                        }
-                    )
-                    EventCard(
-                        eventDetails = EventDetails(
-                            title = "Event 2",
-                            deadline = LocalDate.now().plusDays(2),
-                            targetAmount = 1000,
-                            collectedAmount = -523,
-                            balanceStatus = BalanceStatus.Negative
-                        ),
-                        onClick = {
-                            navController.navigate("")
-                        }
-                    )
-                    EventCard(
-                        eventDetails = EventDetails(
-                            title = "Event 4",
-                            deadline = LocalDate.now().plusDays(4),
-                            targetAmount = 1000,
-                            collectedAmount = 1000,
-                            balanceStatus = BalanceStatus.Positive
-                        ),
-                        onClick = {
-                            navController.navigate("")
-                        }
-                    )
-                    EventCard(
-                        eventDetails = EventDetails(
-                            title = "Event 5",
-                            deadline = LocalDate.now().plusDays(5),
-                            targetAmount = 1000,
-                            collectedAmount = -1000,
-                            balanceStatus = BalanceStatus.Negative
-                        ),
-                        onClick = {
-                            navController.navigate("")
-                        }
-                    )
+                    viewModel.getEvents().forEach { eventDetails ->
+                        EventCard(navController, eventDetails)
+                    }
                 }
             }
         }
@@ -173,7 +147,6 @@ fun BalanceCard(
             containerColor = when (type) {
                 BalanceStatus.Positive -> Color.Green
                 BalanceStatus.Negative -> Color.Red
-                else -> Color.Gray
             }.copy(alpha = 0.25f)
         )
     ) {
@@ -211,11 +184,11 @@ fun EventCardsSection(
 }
 
 @Composable
-fun EventCard(eventDetails: EventDetails, onClick: () -> Unit) {
+fun EventCard(navController: NavController, eventDetails: EventDetails) {
     Card(
         modifier = Modifier
             .padding(vertical = 8.dp)
-            .clickable { onClick() },
+            .clickable { navController.navigate("${Screen.EventDetails.route}/${eventDetails.title}") },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
