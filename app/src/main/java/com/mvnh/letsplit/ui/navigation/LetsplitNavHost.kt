@@ -12,7 +12,7 @@ import com.mvnh.letsplit.ui.screen.main.EventsScreen
 import com.mvnh.letsplit.ui.screen.main.ProfileScreen
 import com.mvnh.letsplit.ui.screen.auth.WelcomeScreen
 import com.mvnh.letsplit.ui.screen.main.CreateEventScreen
-import com.mvnh.letsplit.ui.screen.main.EventsDetailsScreen
+import com.mvnh.letsplit.ui.screen.main.EventDetailsScreen
 
 @Composable
 fun LetsplitNavHost(
@@ -44,9 +44,11 @@ fun LetsplitNavHost(
         composable(Screen.CreateEvent.route) {
             CreateEventScreen()
         }
-
-        composable(Screen.Details.route) {
-            EventsDetailsScreen()
+        composable("${Screen.EventDetails.route}/{event_id}") { backStackEntry ->
+            val eventId = backStackEntry.arguments?.getString("event_id")
+            eventId?.let {
+                EventDetailsScreen(it)
+            }
         }
     }
 }

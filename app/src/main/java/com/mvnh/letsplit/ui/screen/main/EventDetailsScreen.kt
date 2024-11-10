@@ -3,29 +3,22 @@ package com.mvnh.letsplit.ui.screen.main
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,20 +34,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mvnh.letsplit.R
-import com.mvnh.letsplit.domain.model.EventDetails
-import com.mvnh.letsplit.ui.viewmodel.state.BalanceStatus
-import org.koin.core.qualifier.qualifier
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventsDetailsScreen() {
+fun EventDetailsScreen(eventId: String) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Назад",
+                        text = eventId,
                         fontWeight = FontWeight.SemiBold
                     )
                 }, navigationIcon = {
@@ -62,8 +51,8 @@ fun EventsDetailsScreen() {
 
                     }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = R.string.back.toString()
                         )
                     }
                 }
@@ -71,34 +60,22 @@ fun EventsDetailsScreen() {
         },
         contentWindowInsets = WindowInsets(0.dp),
     ) { innerPadding ->
-        val bills = arrayListOf(
-            EventDetails(
-                title = "Продукты в магазине",
-                deadline = LocalDate.of(2024, 12, 15),
-                targetAmount = 1,
-                collectedAmount = 750,
-                balanceStatus = BalanceStatus.Positive
-            ), EventDetails(
-                title = "Такси до города",
-                deadline = LocalDate.of(2024, 12, 15),
-                targetAmount = -1,
-                collectedAmount = 2500,
-                balanceStatus = BalanceStatus.Negative
-            )
+        Text(
+            text = eventId,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(16.dp)
         )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
                 .padding(innerPadding)
         ) {
-            items(bills) { item ->
-
+            items(4) { index ->
                 ExpenseCard(
-                    title = item.title,
-                    amountOwed = item.collectedAmount.toString(),
-                    (item.targetAmount).toString(),
-                    modifier = Modifier
+                    title = "Expense $index",
+                    amountOwed = (index + 1) * 100,
+                    transferToPhoneNumber = "+79154672943",
+                    balanceStatus = if (index % 2 == 0) 1 else -1
                 )
             }
         }
@@ -108,12 +85,12 @@ fun EventsDetailsScreen() {
 @Composable
 fun ExpenseCard(
     title: String,
-    amountOwed: String,
-    balanceStatus: String,
-    modifier: Modifier = Modifier
+    amountOwed: Int,
+    transferToPhoneNumber: String,
+    balanceStatus: Int
 ) {
     Card(
-        modifier = Modifier.padding(vertical = 8.dp),
+        modifier = Modifier.padding(8.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
@@ -137,25 +114,25 @@ fun ExpenseCard(
 
                 Column {
                     Text(
-                        text = if(balanceStatus == "-1") "Вы должны " else "Вам должны ",
+                        text = stringResource(if (balanceStatus < 0) R.string.you_owe else R.string.you_are_owed),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Normal
                     )
                     Text(
-                        text = amountOwed,
+                        text = "$amountOwed ₽",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = if(balanceStatus == "-1") Color.Red else Color.Green
+                        color = if(balanceStatus < 0) Color.Red else Color.Green
                     )
                 }
             }
-            DeepLinkButtons(amountOwed, "+79164681437")
+            TransferWithTBank(amountOwed, transferToPhoneNumber)
         }
     }
 }
 
 @Composable
-fun DeepLinkButtons(amount: String, phoneNumber: String) {
+fun TransferWithTBank(amount: Int, phoneNumber: String) {
     val context = LocalContext.current
     val deepLinkUrl = "tbank://Main/PayByMobileNumber?numberPhone=$phoneNumber&amount=$amount"
 
@@ -164,13 +141,15 @@ fun DeepLinkButtons(amount: String, phoneNumber: String) {
             containerColor = Color.Yellow
         ),
         onClick = {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLinkUrl))
-        try {
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            Log.e("INFOG", "error")
-        }
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLinkUrl))
+            try {
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                Log.e("Letsplit", "Failed to start activity", e)
+            }
     }) {
-        Text("Отправить деньги")
+        Text(
+            text = stringResource(R.string.transfer_money),
+        )
     }
 }
