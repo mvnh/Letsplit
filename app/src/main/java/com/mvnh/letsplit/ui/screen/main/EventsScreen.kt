@@ -270,9 +270,9 @@ fun EventCard(eventDetails: EventDetails) {
                             BalanceStatus.Negative -> stringResource(R.string.you_owe)
                         } + " ${eventDetails.collectedAmount} ₽",
                         style = MaterialTheme.typography.bodyMedium
-                )
+                    )
+                }
             }
         }
     }
-}
 }

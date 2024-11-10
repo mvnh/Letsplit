@@ -18,7 +18,7 @@ val networkModule = module {
                 json()
             }
             install(DefaultRequest) {
-                url("http://127.0.0.1:8080/")
+                url("http://158.160.74.134:8000/api/v1")
             }
         }
     }
