@@ -2,6 +2,7 @@ package com.mvnh.letsplit.ui.screen.main
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.mvnh.letsplit.R
 import com.mvnh.letsplit.domain.model.EventDetails
 import com.mvnh.letsplit.ui.viewmodel.state.BalanceStatus
@@ -34,7 +36,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventsScreen() {
+fun EventsScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -86,8 +88,11 @@ fun EventsScreen() {
                             deadline = LocalDate.now().plusDays(1),
                             targetAmount = 1000,
                             collectedAmount = 523,
-                            balanceStatus = BalanceStatus.Positive
-                        )
+                            balanceStatus = BalanceStatus.Positive,
+                        ),
+                        onClick = {
+                            navController.navigate("")
+                        }
                     )
                     EventCard(
                         eventDetails = EventDetails(
@@ -96,7 +101,10 @@ fun EventsScreen() {
                             targetAmount = 1000,
                             collectedAmount = -523,
                             balanceStatus = BalanceStatus.Negative
-                        )
+                        ),
+                        onClick = {
+                            navController.navigate("")
+                        }
                     )
                     EventCard(
                         eventDetails = EventDetails(
@@ -105,7 +113,10 @@ fun EventsScreen() {
                             targetAmount = 1000,
                             collectedAmount = 1000,
                             balanceStatus = BalanceStatus.Positive
-                        )
+                        ),
+                        onClick = {
+                            navController.navigate("")
+                        }
                     )
                     EventCard(
                         eventDetails = EventDetails(
@@ -114,7 +125,10 @@ fun EventsScreen() {
                             targetAmount = 1000,
                             collectedAmount = -1000,
                             balanceStatus = BalanceStatus.Negative
-                        )
+                        ),
+                        onClick = {
+                            navController.navigate("")
+                        }
                     )
                 }
             }
@@ -197,9 +211,11 @@ fun EventCardsSection(
 }
 
 @Composable
-fun EventCard(eventDetails: EventDetails) {
+fun EventCard(eventDetails: EventDetails, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.padding(vertical = 8.dp),
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = MaterialTheme.shapes.medium
     ) {
