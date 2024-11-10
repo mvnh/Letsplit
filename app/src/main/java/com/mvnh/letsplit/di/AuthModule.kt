@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val authModule = module {
     single { AuthService(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
-    single { AuthUseCase(get()) }
+    single { AuthUseCase(get(), get()) }
 
     viewModel { AuthViewModel(get()) }
 }

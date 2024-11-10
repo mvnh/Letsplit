@@ -24,7 +24,9 @@ class AuthViewModel(private val useCase: AuthUseCase) : ViewModel() {
              _authState.value = when {
                  result.isSuccess -> {
                      Log.d("Letsplit", result.getOrThrow().toString())
-                     AuthState.Success(result.getOrThrow())
+                     useCase.saveUserId(result.getOrThrow().accessToken)
+                     Log.d("Letsplit", "sdssss ${useCase.getUserId().toString()}")
+                     AuthState.Success(result.getOrThrow().accessToken)
                  }
 
                  else -> {
@@ -44,6 +46,8 @@ class AuthViewModel(private val useCase: AuthUseCase) : ViewModel() {
             _authState.value = when {
                 result.isSuccess -> {
                     Log.d("Letsplit", result.getOrThrow().toString())
+                    useCase.saveUserId(result.getOrThrow().accessToken)
+                    Log.d("Letsplit", "sdssss ${useCase.getUserId().toString()}")
                     AuthState.Success(result.getOrThrow())
                 }
 
@@ -53,5 +57,9 @@ class AuthViewModel(private val useCase: AuthUseCase) : ViewModel() {
                 }
             }
         }
+    }
+
+    fun getUserId(): String? {
+        return useCase.getUserId()
     }
 }
