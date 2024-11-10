@@ -18,4 +18,6 @@
     <string name="you_owe">You owe </string>
     <string name="you_are_owed">You are owed </string>
     <string name="balance">Balance</string>
+    <string name="notifications">Notifications</string>
+    <string name="phone">Phone</string>
 </resources>

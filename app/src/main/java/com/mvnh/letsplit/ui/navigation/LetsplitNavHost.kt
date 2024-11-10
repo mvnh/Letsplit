@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mvnh.letsplit.ui.screen.auth.WelcomeScreen
 import com.mvnh.letsplit.ui.screen.main.EventInvitationsScreen
 import com.mvnh.letsplit.ui.screen.main.EventsScreen
 import com.mvnh.letsplit.ui.screen.main.ProfileScreen
+import com.mvnh.letsplit.ui.screen.auth.WelcomeScreen
 
 @Composable
 fun LetsplitNavHost(
@@ -35,6 +35,12 @@ fun LetsplitNavHost(
         }
         composable(Screen.Profile.route) {
             ProfileScreen()
+        }
+        composable(Screen.Bills.route) {
+            BillsScreen()
+        }
+        composable(Screen.CreateEvent.route) {
+            CreateEventScreen()
         }
     }
 }
