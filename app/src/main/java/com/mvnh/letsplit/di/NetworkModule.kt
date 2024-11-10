@@ -5,6 +5,8 @@ import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.URLProtocol
+import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import org.koin.dsl.module
 
@@ -18,7 +20,11 @@ val networkModule = module {
                 json()
             }
             install(DefaultRequest) {
-                url("http://158.160.74.134:8000/api/v1")
+                url {
+                    protocol = URLProtocol.HTTP
+                    host = "158.160.74.134"
+                    port = 8000
+                }
             }
         }
     }

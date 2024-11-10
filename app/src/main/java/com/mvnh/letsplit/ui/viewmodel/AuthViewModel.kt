@@ -43,10 +43,12 @@ class AuthViewModel(private val useCase: AuthUseCase) : ViewModel() {
 
             _authState.value = when {
                 result.isSuccess -> {
+                    Log.d("Letsplit", result.getOrThrow().toString())
                     AuthState.Success(result.getOrThrow())
                 }
 
                 else -> {
+                    Log.e("Letsplit", result.exceptionOrNull()?.message ?: "An error occurred")
                     AuthState.Error(result.exceptionOrNull()?.message ?: "An error occurred")
                 }
             }

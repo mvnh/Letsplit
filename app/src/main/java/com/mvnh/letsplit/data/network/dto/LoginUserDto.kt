@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginUserDto(
-    @SerialName("phone_number") val phoneNumber: String,
+    @SerialName("phone") val phoneNumber: String,
     val password: String
 )

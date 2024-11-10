@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +33,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mvnh.letsplit.R
+import com.mvnh.letsplit.ui.navigation.Screen
 import com.mvnh.letsplit.ui.viewmodel.AuthViewModel
 import com.mvnh.letsplit.ui.viewmodel.state.AuthState
 import kotlinx.coroutines.launch
@@ -40,6 +43,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SignUpScreen(
+    navController: NavController,
     viewModel: AuthViewModel = koinViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -51,6 +55,18 @@ fun SignUpScreen(
     val authState by viewModel.authState.collectAsState()
     val isLoading = authState is AuthState.Loading
     val isError = authState is AuthState.Error
+
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Success -> {
+                navController.navigate(Screen.Events.route) {
+                    popUpTo(Screen.Welcome.route) { inclusive = true }
+                }
+            }
+
+            else -> { /* Do nothing */ }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
